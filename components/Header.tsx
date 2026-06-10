@@ -15,7 +15,7 @@ import ChicagoClock from "@/components/ChicagoClock";
 function Logo({ inverted = false }: { inverted?: boolean }) {
   return (
     <Link href="/" className="group flex items-center gap-3" aria-label="Brightville Hope School — home">
-      <svg viewBox="0 0 64 64" className="h-9 w-9 shrink-0" aria-hidden>
+      <svg viewBox="0 0 64 64" className="h-9 w-9 shrink-0 transition-all duration-500" aria-hidden>
         <rect width="64" height="64" rx="14" fill={inverted ? "#faf8f2" : "#0c2b21"} />
         <g stroke={inverted ? "#0c2b21" : "#faf8f2"} strokeWidth="2.6" strokeLinecap="round">
           <line x1="32" y1="12" x2="32" y2="19" />
@@ -25,9 +25,9 @@ function Logo({ inverted = false }: { inverted?: boolean }) {
         <path d="M19 44a13 13 0 0 1 26 0Z" fill={inverted ? "#0c2b21" : "#faf8f2"} />
         <line x1="12" y1="48.5" x2="52" y2="48.5" stroke={inverted ? "#0c2b21" : "#faf8f2"} strokeWidth="2.6" strokeLinecap="round" />
       </svg>
-      <span className={`font-display leading-tight ${inverted ? "text-cream" : "text-ink"}`}>
+      <span className={`font-display leading-tight transition-colors duration-500 ${inverted ? "text-cream" : "text-ink"}`}>
         <span className="block text-[1.05rem] tracking-tight">Brightville Hope</span>
-        <span className={`block text-[0.6rem] uppercase tracking-[0.3em] ${inverted ? "text-cream/60" : "text-soft"}`}>
+        <span className={`block text-[0.6rem] uppercase tracking-[0.3em] transition-colors duration-500 ${inverted ? "text-cream/60" : "text-soft"}`}>
           School · Chicago
         </span>
       </span>
@@ -56,6 +56,12 @@ export default function Header() {
     };
   }, [open]);
 
+  // The home hero is deep pine — while the header floats over it (not yet
+  // scrolled), everything flips to cream so it stays legible. Inner pages
+  // have light heroes and keep ink text.
+  const overDark = pathname === "/" && !solid;
+  const light = open || overDark;
+
   return (
     <>
       <header
@@ -66,59 +72,74 @@ export default function Header() {
         }`}
       >
         <div className="container-x flex h-[4.5rem] items-center justify-between gap-6">
-          <Logo inverted={open} />
+          <Logo inverted={light} />
 
           {/* desktop nav */}
           <nav className="hidden items-center gap-1 lg:flex" aria-label="Primary">
-            {nav.map((item) => (
-              <div key={item.label} className="group relative">
-                <Link
-                  href={item.href}
-                  className={`rounded-full px-4 py-2 text-[0.86rem] font-medium transition-colors ${
-                    pathname.startsWith(item.href)
-                      ? "text-pine"
-                      : "text-ink hover:text-pine"
-                  }`}
-                >
-                  {item.label}
-                </Link>
-                {item.children && (
-                  <div className="invisible absolute left-0 top-full pt-3 opacity-0 transition-all duration-300 group-hover:visible group-hover:opacity-100">
-                    <div className="w-64 rounded-2xl border border-line bg-paper p-2 shadow-[0_24px_48px_-20px_rgba(12,43,33,0.25)]">
-                      {item.children.map((child) => (
-                        <Link
-                          key={child.href}
-                          href={child.href}
-                          className="block rounded-xl px-4 py-3 transition-colors hover:bg-tint"
-                        >
-                          <span className="block text-sm font-medium text-ink">
-                            {child.label}
-                          </span>
-                          {child.note && (
-                            <span className="block text-xs text-faint">{child.note}</span>
-                          )}
-                        </Link>
-                      ))}
+            {nav.map((item) => {
+              const active = pathname.startsWith(item.href);
+              return (
+                <div key={item.label} className="group relative">
+                  <Link
+                    href={item.href}
+                    className={`rounded-full px-4 py-2 text-[0.86rem] font-medium transition-colors duration-300 ${
+                      light
+                        ? active
+                          ? "text-cream"
+                          : "text-cream/75 hover:text-cream"
+                        : active
+                          ? "text-pine"
+                          : "text-ink hover:text-pine"
+                    }`}
+                  >
+                    {item.label}
+                  </Link>
+                  {item.children && (
+                    <div className="invisible absolute left-0 top-full pt-3 opacity-0 transition-all duration-300 group-hover:visible group-hover:opacity-100">
+                      <div className="w-64 rounded-2xl border border-line bg-paper p-2 shadow-[0_24px_48px_-20px_rgba(12,43,33,0.25)]">
+                        {item.children.map((child) => (
+                          <Link
+                            key={child.href}
+                            href={child.href}
+                            className="block rounded-xl px-4 py-3 transition-colors hover:bg-tint"
+                          >
+                            <span className="block text-sm font-medium text-ink">
+                              {child.label}
+                            </span>
+                            {child.note && (
+                              <span className="block text-xs text-faint">{child.note}</span>
+                            )}
+                          </Link>
+                        ))}
+                      </div>
                     </div>
-                  </div>
-                )}
-              </div>
-            ))}
+                  )}
+                </div>
+              );
+            })}
           </nav>
 
           <div className="hidden items-center gap-4 lg:flex">
             <div className="hidden xl:block">
-              <ChicagoClock variant="light" />
+              <ChicagoClock variant={light ? "dark" : "light"} />
             </div>
             <Link
               href="/admissions/apply"
-              className="rounded-full border border-ink/20 px-5 py-2.5 text-[0.84rem] font-semibold text-ink transition-all hover:border-pine hover:text-pine active:translate-y-px"
+              className={`rounded-full border px-5 py-2.5 text-[0.84rem] font-semibold transition-all duration-300 active:translate-y-px ${
+                light
+                  ? "border-cream/35 text-cream hover:bg-cream/10"
+                  : "border-ink/20 text-ink hover:border-pine hover:text-pine"
+              }`}
             >
               Inquire
             </Link>
             <Link
               href="/admin"
-              className="rounded-full bg-pine px-5 py-2.5 text-[0.84rem] font-semibold text-cream transition-all hover:bg-pine-deep active:translate-y-px"
+              className={`rounded-full px-5 py-2.5 text-[0.84rem] font-semibold transition-all duration-300 active:translate-y-px ${
+                light
+                  ? "bg-cream text-pine-ink hover:bg-white"
+                  : "bg-pine text-cream hover:bg-pine-deep"
+              }`}
             >
               Student Portal
             </Link>
@@ -135,15 +156,13 @@ export default function Header() {
             <span className="relative block h-3.5 w-6">
               <span
                 className={`absolute left-0 top-0 h-[2px] w-full rounded transition-all duration-300 ${
-                  open ? "top-1/2 -translate-y-1/2 rotate-45 bg-cream" : "bg-ink"
-                }`}
+                  open ? "top-1/2 -translate-y-1/2 rotate-45" : ""
+                } ${light ? "bg-cream" : "bg-ink"}`}
               />
               <span
                 className={`absolute bottom-0 left-0 h-[2px] rounded transition-all duration-300 ${
-                  open
-                    ? "bottom-1/2 w-full translate-y-1/2 -rotate-45 bg-cream"
-                    : "w-4/6 bg-ink"
-                }`}
+                  open ? "bottom-1/2 w-full translate-y-1/2 -rotate-45" : "w-4/6"
+                } ${light ? "bg-cream" : "bg-ink"}`}
               />
             </span>
           </button>
@@ -161,7 +180,7 @@ export default function Header() {
             exit={{ clipPath: "circle(0% at calc(100% - 3rem) 2.2rem)" }}
             transition={{ duration: 0.55, ease: [0.76, 0, 0.24, 1] }}
           >
-            <div className="container-x flex-1 overflow-y-auto pb-10 pt-24">
+            <div className="container-x flex-1 overflow-y-auto pb-10 pt-24" data-lenis-prevent>
               <motion.nav
                 aria-label="Mobile"
                 initial="hidden"

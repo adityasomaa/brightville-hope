@@ -22,8 +22,8 @@ export default function ChicagoClock({
 
   const tone =
     variant === "dark"
-      ? { time: "text-cream", label: "text-cream/50" }
-      : { time: "text-ink", label: "text-faint" };
+      ? { time: "text-cream", label: "text-cream/50", dot: "bg-cream" }
+      : { time: "text-ink", label: "text-faint", dot: "bg-pine" };
 
   if (!now) {
     return (
@@ -47,7 +47,7 @@ export default function ChicagoClock({
       className="flex items-center gap-2.5"
       aria-label={`Current time in Chicago: ${time}`}
     >
-      <span className="h-1.5 w-1.5 rounded-full bg-pine animate-pulse-dot" aria-hidden />
+      <span className={`h-1.5 w-1.5 rounded-full animate-pulse-dot ${tone.dot}`} aria-hidden />
       <span className={`font-mono text-sm tabular-nums ${tone.time}`}>{time}</span>
       <span className={`text-[0.6rem] font-semibold uppercase tracking-[0.25em] ${tone.label}`}>
         Chicago
