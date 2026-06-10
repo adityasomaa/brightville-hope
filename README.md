@@ -1,36 +1,73 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+# Brightville Hope School — Website & Student Portal
 
-## Getting Started
+Marketing site and student portal for **Brightville Hope School**, an independent
+PreK–12 school in Lincoln Park, Chicago. The flagship campus is under
+construction (opening Fall 2027), so the site leads with the story of a school
+being built — modeled structurally on top-tier independent-school sites.
 
-First, run the development server:
+**Live:** deployed on Vercel · **Data:** Supabase (Postgres + RLS)
 
-```bash
-npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
+## Stack
+
+- **Next.js 16** (App Router, React 19, Turbopack)
+- **Tailwind CSS v4** — design tokens in `app/globals.css`
+- **Framer Motion** — reveals, page transitions, mobile menu, loaders
+- **Lenis** — smooth scrolling, desktop pointers only (`components/LenisProvider.tsx`)
+- **Supabase** — announcements, events, assignments, portal users, inquiries
+- **jose + bcryptjs** — signed HTTP-only session cookie for the portal
+
+## Design system
+
+Editorial "warm cream / deep pine" palette, Fraunces display serif +
+Outfit sans + JetBrains Mono for numerals. All imagery is original SVG
+graphic art (`components/PlaceholderArt.tsx`) — no stock photos.
+
+## Structure
+
+```
+app/
+├── (site)/            public site: home, about, leadership, academics (+3
+│                      divisions), student life, arts, athletics, admissions,
+│                      apply, tuition, news, contact, 404
+│   └── template.tsx   page-to-page wipe transition
+├── admin/             portal sign-in (split-screen) + student dashboard
+├── api/               auth login/logout, admissions inquiries
+└── icon.svg           site icon (sunrise mark)
+components/            header (mega-menu + hamburger), footer (live Chicago
+                       clock), loaders, forms (custom date fields), dashboard
+lib/                   content.ts (single source of copy), auth.ts, supabase.ts
+supabase/              schema.sql, seed.sql, apply.mjs (management-API runner)
 ```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+## Local development
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+```bash
+npm install
+cp .env.example .env.local   # fill in values
+npm run dev
+```
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+## Environment variables
 
-## Learn More
+See `.env.example`. Required in production: `NEXT_PUBLIC_SUPABASE_URL`,
+`NEXT_PUBLIC_SUPABASE_ANON_KEY`, `SUPABASE_SERVICE_ROLE_KEY`, `AUTH_SECRET`,
+plus optional `ADMIN_USERNAME`/`ADMIN_PASSWORD` as a database-down fallback
+for the portal.
 
-To learn more about Next.js, take a look at the following resources:
+## Database
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+Tables: `portal_users`, `announcements` (public/students audiences),
+`events`, `assignments`, `inquiries`. RLS is enabled everywhere; anonymous
+clients can read only public announcements and events. Apply with:
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
+```bash
+SUPABASE_ACCESS_TOKEN=sbp_xxx node supabase/apply.mjs
+```
 
-## Deploy on Vercel
+## Portal
 
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
-
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+`/admin` — styled sign-in. Credentials are verified against
+`portal_users` (bcrypt) and a 7-day JWT session cookie is set.
+`/admin/dashboard` — student dashboard: school updates, schoolwork with
+due dates and statuses, today's schedule, grades snapshot, profile, and
+upcoming events. Server-side guarded; signed out users are redirected.
