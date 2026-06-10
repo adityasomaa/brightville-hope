@@ -36,7 +36,7 @@ export default function AdmissionsPage() {
     <>
       <PageHero
         kicker="Admissions"
-        title="A school you join, not just attend"
+        title="A school you *join,* not just attend"
         body="Choosing a school is choosing the adults who will know your child. Start with a visit — the building is temporary, the culture isn't."
         art="sunrise"
       />

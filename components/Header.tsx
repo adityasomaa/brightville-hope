@@ -10,6 +10,7 @@ import {
   useMotionValueEvent,
 } from "framer-motion";
 import { nav, school } from "@/lib/content";
+import ChicagoClock from "@/components/ChicagoClock";
 
 function Logo({ inverted = false }: { inverted?: boolean }) {
   return (
@@ -105,7 +106,10 @@ export default function Header() {
             ))}
           </nav>
 
-          <div className="hidden items-center gap-3 lg:flex">
+          <div className="hidden items-center gap-4 lg:flex">
+            <div className="hidden xl:block">
+              <ChicagoClock variant="light" />
+            </div>
             <Link
               href="/admissions/apply"
               className="rounded-full border border-ink/20 px-5 py-2.5 text-[0.84rem] font-semibold text-ink transition-all hover:border-pine hover:text-pine active:translate-y-px"
@@ -245,7 +249,10 @@ export default function Header() {
                 >
                   Student Portal
                 </Link>
-                <p className="mt-4 text-center text-xs uppercase tracking-[0.25em] text-cream/40">
+                <div className="mt-5 flex justify-center">
+                  <ChicagoClock variant="dark" />
+                </div>
+                <p className="mt-3 text-center text-xs uppercase tracking-[0.25em] text-cream/40">
                   {school.neighborhood}
                 </p>
               </motion.div>

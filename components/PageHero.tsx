@@ -1,5 +1,6 @@
 import PlaceholderArt from "@/components/PlaceholderArt";
 import Reveal from "@/components/Reveal";
+import Em from "@/components/Em";
 
 type Art = "sunrise" | "arch" | "field" | "orbit" | "ribbon";
 
@@ -23,7 +24,7 @@ export default function PageHero({
             {kicker}
           </p>
           <h1 className="mt-5 max-w-[16ch] font-display text-4xl leading-[1.02] tracking-tight text-ink md:text-6xl">
-            {title}
+            <Em>{title}</Em>
           </h1>
           <p className="mt-6 max-w-[58ch] text-base leading-relaxed text-soft md:text-lg">
             {body}

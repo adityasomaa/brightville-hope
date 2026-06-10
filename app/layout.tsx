@@ -6,6 +6,7 @@ import LenisProvider from "@/components/LenisProvider";
 const fraunces = Fraunces({
   variable: "--font-fraunces",
   subsets: ["latin"],
+  style: ["normal", "italic"],
   axes: ["opsz"],
 });
 

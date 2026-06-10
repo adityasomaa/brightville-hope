@@ -24,7 +24,7 @@ export default function AboutPage() {
     <>
       <PageHero
         kicker="Who we are"
-        title="A school built on purpose, in every sense"
+        title="A school built *on purpose,* in every sense"
         body="Most schools inherit their habits. Brightville Hope gets to choose ours — which is why every schedule block, hiring decision, and floor plan starts with the same question: what does a child need to flourish?"
         art="arch"
       />

@@ -21,6 +21,22 @@ html {
   scroll-behavior: auto;
 }
 
+/* Lenis recommended styles — without these, wheel input can stall
+   over certain sections while the scrollbar still works */
+html.lenis,
+html.lenis body {
+  height: auto;
+}
+.lenis.lenis-smooth {
+  scroll-behavior: auto !important;
+}
+.lenis.lenis-smooth [data-lenis-prevent] {
+  overscroll-behavior: contain;
+}
+.lenis.lenis-stopped {
+  overflow: hidden;
+}
+
 body {
   background: var(--color-cream);
   color: var(--color-ink);
@@ -91,34 +107,6 @@ body {
   font-size: 0.8rem;
   color: #a8442e;
 }
-select.field-input {
-  cursor: pointer;
-  background-image: url("data:image/svg+xml;charset=utf-8,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='8' viewBox='0 0 12 8'%3E%3Cpath d='M1 1l5 5 5-5' fill='none' stroke='%2357544a' stroke-width='1.6' stroke-linecap='round'/%3E%3C/svg%3E");
-  background-repeat: no-repeat;
-  background-position: right 1.1rem center;
-  padding-right: 2.6rem;
-}
-
-/* date fields: whole field is the trigger, native icon hidden */
-input[type="date"].field-input {
-  cursor: pointer;
-  min-height: 3.4rem;
-}
-input[type="date"].field-input::-webkit-calendar-picker-indicator {
-  position: absolute;
-  inset: 0;
-  width: 100%;
-  height: 100%;
-  opacity: 0;
-  cursor: pointer;
-}
-input[type="date"].field-input::-webkit-datetime-edit {
-  color: var(--color-ink);
-}
-input[type="date"].field-input.is-empty::-webkit-datetime-edit {
-  color: var(--color-faint);
-}
-
 /* thin elegant scrollbar */
 ::-webkit-scrollbar {
   width: 10px;
@@ -135,6 +123,19 @@ input[type="date"].field-input.is-empty::-webkit-datetime-edit {
   background: var(--color-pine);
 }
 
+/* Berkeley Carroll-style growing underline on hover */
+.link-underline {
+  background-image: linear-gradient(currentColor, currentColor);
+  background-size: 0% 1px;
+  background-position: 0 100%;
+  background-repeat: no-repeat;
+  transition: background-size 0.4s cubic-bezier(0.16, 1, 0.3, 1);
+  padding-bottom: 2px;
+}
+.link-underline:hover {
+  background-size: 100% 1px;
+}
+
 /* marquee */
 @keyframes marquee-x {
   from {
@@ -148,13 +149,13 @@ input[type="date"].field-input.is-empty::-webkit-datetime-edit {
   animation: marquee-x 28s linear infinite;
 }
 
-/* loader ring draw */
-@keyframes ring-draw {
-  from {
-    stroke-dashoffset: 320;
+/* hero scroll cue */
+@keyframes marquee-y {
+  0% {
+    transform: translateY(-100%);
   }
-  to {
-    stroke-dashoffset: 0;
+  100% {
+    transform: translateY(250%);
   }
 }
 

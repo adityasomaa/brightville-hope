@@ -1,4 +1,5 @@
 import Reveal from "@/components/Reveal";
+import Em from "@/components/Em";
 
 export default function SectionHeading({
   kicker,
@@ -35,7 +36,7 @@ export default function SectionHeading({
               tone === "dark" ? "text-cream" : "text-ink"
             }`}
           >
-            {title}
+            <Em>{title}</Em>
           </h2>
         </div>
         {body && (

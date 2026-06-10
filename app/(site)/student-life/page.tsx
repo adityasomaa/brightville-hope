@@ -43,7 +43,7 @@ export default function StudentLifePage() {
     <>
       <PageHero
         kicker="Student life"
-        title="The hours between classes count double"
+        title="The hours between classes *count double*"
         body="Ask a graduate what made school matter and they rarely name a lesson. They name a stage, a team, a trip, an advisor. We schedule accordingly."
         art="ribbon"
       />

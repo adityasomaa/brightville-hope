@@ -30,7 +30,7 @@ export default function AthleticsPage() {
     <>
       <PageHero
         kicker="Athletics · The Beacons"
-        title="Everybody plays. That's the program."
+        title="Everybody plays. *That's the program.*"
         body="The Brightville Beacons field teams across three seasons with a simple philosophy: athletics exist to teach things a classroom can't — how to lose well, lead quietly, and show up for practice in February."
         art="field"
       />
@@ -61,7 +61,7 @@ export default function AthleticsPage() {
             body="Middle School (MS), junior varsity (JV), and varsity programs. The new gymnasium and rooftop field open with the campus in 2027."
           />
           <Reveal delay={0.1}>
-            <div className="mt-12 overflow-x-auto">
+            <div className="mt-12 overflow-x-auto" data-lenis-prevent>
               <table className="w-full min-w-[34rem] border-collapse text-left">
                 <thead>
                   <tr className="border-b-2 border-ink/15 text-xs font-semibold uppercase tracking-[0.2em] text-soft">

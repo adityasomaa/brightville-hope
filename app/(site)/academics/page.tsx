@@ -36,7 +36,7 @@ export default function AcademicsPage() {
     <>
       <PageHero
         kicker="Learning & discovery"
-        title="One arc, from first phonics to final defense"
+        title="One arc, from first phonics to *final defense*"
         body="Three divisions share one faculty culture and one philosophy: children rise to real intellectual work when the adults around them believe they can."
         art="orbit"
       />

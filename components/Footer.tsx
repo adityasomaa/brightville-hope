@@ -1,6 +1,5 @@
 import Link from "next/link";
 import { school } from "@/lib/content";
-import ChicagoClock from "@/components/ChicagoClock";
 
 const columns = [
   {
@@ -37,24 +36,21 @@ export default function Footer() {
   return (
     <footer className="bg-pine-ink text-cream">
       <div className="container-x grid gap-12 py-16 md:py-20 lg:grid-cols-[1.4fr_2fr]">
-        <div className="flex flex-col justify-between gap-10">
-          <div>
-            <p className="font-display text-3xl leading-tight tracking-tight md:text-4xl">
-              Bright minds.
-              <br />
-              <span className="text-cream/60">Boundless hope.</span>
-            </p>
-            <address className="mt-6 text-sm not-italic leading-relaxed text-cream/70">
-              {school.address}
-              <br />
-              {school.phone}
-              <br />
-              <a href={`mailto:${school.email}`} className="underline decoration-cream/30 underline-offset-4 transition-colors hover:text-cream">
-                {school.email}
-              </a>
-            </address>
-          </div>
-          <ChicagoClock />
+        <div>
+          <p className="font-display text-3xl leading-tight tracking-tight md:text-4xl">
+            Bright minds.
+            <br />
+            <em className="font-light italic text-cream/60">Boundless hope.</em>
+          </p>
+          <address className="mt-6 text-sm not-italic leading-relaxed text-cream/70">
+            {school.address}
+            <br />
+            {school.phone}
+            <br />
+            <a href={`mailto:${school.email}`} className="underline decoration-cream/30 underline-offset-4 transition-colors hover:text-cream">
+              {school.email}
+            </a>
+          </address>
         </div>
 
         <div className="grid grid-cols-2 gap-10 sm:grid-cols-3">

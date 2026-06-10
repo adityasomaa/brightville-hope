@@ -3,79 +3,103 @@
 import { useEffect, useState } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 
+const WORDS = ["Brightville", "Hope", "School"];
+
 /**
- * Full-site loader shown on hard loads: a sunrise mark draws itself,
- * the wordmark letters rise in, then the curtain lifts.
- * (Route-to-route navigation uses the separate, quicker wipe in template.tsx.)
+ * Full-site loader for hard loads — editorial and light, in the spirit of
+ * berkeleycarroll.org: serif wordmark rising word by word (with an italic
+ * accent), a thin rule drawing across, then a soft lift away.
+ * Route-to-route navigation uses the quicker transition in template.tsx.
  */
 export default function SiteLoader() {
   const [done, setDone] = useState(false);
 
   useEffect(() => {
     const reduced = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
-    const t = setTimeout(() => setDone(true), reduced ? 150 : 1900);
+    const t = setTimeout(() => setDone(true), reduced ? 150 : 2100);
     return () => clearTimeout(t);
   }, []);
-
-  const word = "BRIGHTVILLE HOPE";
 
   return (
     <AnimatePresence>
       {!done && (
         <motion.div
           key="site-loader"
-          className="fixed inset-0 z-[100] flex flex-col items-center justify-center bg-pine-ink"
-          exit={{ y: "-100%" }}
-          transition={{ duration: 0.7, ease: [0.76, 0, 0.24, 1] }}
+          className="fixed inset-0 z-[100] flex flex-col items-center justify-center bg-cream"
+          exit={{ y: "-6%", opacity: 0 }}
+          transition={{ duration: 0.8, ease: [0.16, 1, 0.3, 1] }}
           aria-label="Loading Brightville Hope School"
         >
-          <svg viewBox="0 0 120 80" className="w-24" fill="none" aria-hidden>
-            <circle
-              cx="60"
-              cy="52"
-              r="20"
-              stroke="#faf8f2"
-              strokeWidth="2.5"
-              strokeDasharray="320"
-              style={{ animation: "ring-draw 1.2s cubic-bezier(0.16,1,0.3,1) forwards" }}
+          {/* sun mark */}
+          <motion.svg
+            viewBox="0 0 64 40"
+            className="w-14"
+            fill="none"
+            initial={{ opacity: 0, y: 8 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.6, ease: [0.16, 1, 0.3, 1] }}
+            aria-hidden
+          >
+            <motion.path
+              d="M16 34a16 16 0 0 1 32 0"
+              stroke="#1a5a45"
+              strokeWidth="2.4"
+              strokeLinecap="round"
+              initial={{ pathLength: 0 }}
+              animate={{ pathLength: 1 }}
+              transition={{ delay: 0.15, duration: 0.9, ease: [0.16, 1, 0.3, 1] }}
             />
             <motion.g
-              stroke="#faf8f2"
-              strokeWidth="2.5"
+              stroke="#1a5a45"
+              strokeWidth="2.4"
               strokeLinecap="round"
               initial={{ opacity: 0 }}
               animate={{ opacity: 1 }}
-              transition={{ delay: 0.7, duration: 0.4 }}
+              transition={{ delay: 0.8, duration: 0.4 }}
             >
-              <line x1="60" y1="14" x2="60" y2="22" />
-              <line x1="32" y1="26" x2="38" y2="32" />
-              <line x1="88" y1="26" x2="82" y2="32" />
+              <line x1="32" y1="4" x2="32" y2="10" />
+              <line x1="12" y1="12" x2="16.5" y2="16.5" />
+              <line x1="52" y1="12" x2="47.5" y2="16.5" />
             </motion.g>
-          </svg>
-          <div className="mt-6 flex overflow-hidden" aria-hidden>
-            {word.split("").map((ch, i) => (
-              <motion.span
-                key={i}
-                className="font-display text-cream text-lg tracking-[0.3em]"
-                initial={{ y: "110%" }}
-                animate={{ y: 0 }}
-                transition={{
-                  delay: 0.35 + i * 0.035,
-                  duration: 0.5,
-                  ease: [0.16, 1, 0.3, 1],
-                }}
-              >
-                {ch === " " ? " " : ch}
-              </motion.span>
+          </motion.svg>
+
+          {/* wordmark — word by word, italic accent on "Hope" */}
+          <div className="mt-7 flex flex-wrap items-baseline justify-center gap-x-[0.45em] px-6" aria-hidden>
+            {WORDS.map((word, i) => (
+              <span key={word} className="overflow-hidden pb-1">
+                <motion.span
+                  className={`block font-display text-4xl tracking-tight text-ink md:text-5xl ${
+                    word === "Hope" ? "font-light italic text-pine" : ""
+                  }`}
+                  initial={{ y: "115%" }}
+                  animate={{ y: 0 }}
+                  transition={{
+                    delay: 0.45 + i * 0.14,
+                    duration: 0.8,
+                    ease: [0.16, 1, 0.3, 1],
+                  }}
+                >
+                  {word}
+                </motion.span>
+              </span>
             ))}
           </div>
+
+          {/* thin rule + kicker */}
+          <motion.div
+            className="mt-7 h-px w-44 bg-ink/20"
+            initial={{ scaleX: 0 }}
+            animate={{ scaleX: 1 }}
+            transition={{ delay: 0.9, duration: 0.9, ease: [0.16, 1, 0.3, 1] }}
+            aria-hidden
+          />
           <motion.p
-            className="mt-3 text-xs uppercase tracking-[0.35em] text-cream/50"
+            className="mt-5 text-[0.62rem] font-semibold uppercase tracking-[0.4em] text-soft"
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
-            transition={{ delay: 1.1, duration: 0.5 }}
+            transition={{ delay: 1.2, duration: 0.6 }}
           >
-            Chicago, Illinois
+            An independent PreK–12 school · Chicago
           </motion.p>
         </motion.div>
       )}

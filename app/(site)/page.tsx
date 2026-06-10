@@ -11,6 +11,7 @@ import Reveal, { RevealGroup, RevealItem } from "@/components/Reveal";
 import SectionHeading from "@/components/SectionHeading";
 import Marquee from "@/components/Marquee";
 import DivisionTabs from "@/components/DivisionTabs";
+import Em from "@/components/Em";
 
 function formatDate(iso: string) {
   return new Intl.DateTimeFormat("en-US", {
@@ -24,53 +25,73 @@ function formatDate(iso: string) {
 export default function HomePage() {
   return (
     <>
-      {/* hero — asymmetric split */}
-      <section className="relative min-h-[100dvh] overflow-hidden bg-cream pt-[4.5rem]">
-        <div className="container-x grid min-h-[calc(100dvh-4.5rem)] items-center gap-12 py-12 lg:grid-cols-[1.15fr_1fr]">
-          <Reveal y={36}>
-            <p className="inline-flex items-center gap-2 rounded-full border border-line bg-paper px-4 py-1.5 text-xs font-semibold text-soft">
-              <span className="h-1.5 w-1.5 rounded-full bg-pine animate-pulse-dot" aria-hidden />
+      {/* hero — full-bleed immersive, in the spirit of berkeleycarroll.org */}
+      <section className="relative flex min-h-[100dvh] flex-col overflow-hidden bg-pine-ink pt-[4.5rem]">
+        <PlaceholderArt
+          variant="sunrise"
+          tone="dark"
+          label="Sunrise over the Brightville campus, illustrated"
+          className="absolute inset-0 h-full w-full opacity-30"
+        />
+        <div
+          className="absolute inset-0 bg-gradient-to-b from-pine-ink/60 via-pine-ink/20 to-pine-ink"
+          aria-hidden
+        />
+
+        <div className="container-x relative flex flex-1 flex-col justify-center py-16">
+          <Reveal y={40}>
+            <p className="inline-flex items-center gap-2 rounded-full border border-cream/25 px-4 py-1.5 text-xs font-semibold text-cream/80">
+              <span className="h-1.5 w-1.5 rounded-full bg-cream animate-pulse-dot" aria-hidden />
               New flagship campus opening Fall 2027
             </p>
-            <h1 className="mt-7 font-display text-5xl leading-[0.98] tracking-tight text-ink md:text-7xl">
-              Bright minds.
-              <br />
-              <span className="text-pine">Boundless</span> hope.
+            <h1 className="mt-8 max-w-[13ch] font-display text-5xl leading-[0.98] tracking-tight text-cream md:text-7xl lg:text-8xl">
+              <Em>{"Bright minds. Boundless *hope.*"}</Em>
             </h1>
-            <p className="mt-7 max-w-[52ch] text-base leading-relaxed text-soft md:text-lg">
+            <p className="mt-8 max-w-[50ch] text-base leading-relaxed text-cream/75 md:text-lg">
               {school.name} is an independent {school.grades} school in{" "}
               {school.neighborhood} — small by design, serious about joy, and
               built on the belief that every child arrives curious.
             </p>
-            <div className="mt-9 flex flex-wrap gap-3">
+            <div className="mt-10 flex flex-wrap gap-3">
               <Link
                 href="/admissions"
-                className="rounded-full bg-pine px-7 py-3.5 font-semibold text-cream transition-all hover:bg-pine-deep active:translate-y-px"
+                className="rounded-full bg-cream px-7 py-3.5 font-semibold text-pine-ink transition-all hover:bg-white active:translate-y-px"
               >
                 Begin admissions
               </Link>
               <Link
                 href="/about"
-                className="rounded-full border border-ink/20 px-7 py-3.5 font-semibold text-ink transition-all hover:border-pine hover:text-pine active:translate-y-px"
+                className="rounded-full border border-cream/35 px-7 py-3.5 font-semibold text-cream transition-colors hover:bg-cream/10 active:translate-y-px"
               >
                 Who we are
               </Link>
             </div>
           </Reveal>
+        </div>
 
-          <Reveal delay={0.2} y={44} className="relative">
-            <PlaceholderArt
-              variant="sunrise"
-              label="Sunrise over the Brightville campus, illustrated"
-              className="aspect-[4/3] w-full rounded-[2.5rem]"
-            />
-            <div className="absolute -bottom-6 -left-4 animate-float rounded-2xl border border-line bg-paper px-5 py-4 shadow-[0_24px_48px_-20px_rgba(12,43,33,0.3)] md:-left-10">
-              <p className="font-mono text-2xl text-pine">11:1</p>
-              <p className="text-xs text-soft">student-teacher ratio</p>
-            </div>
-            <div className="absolute -top-4 right-4 rounded-2xl bg-pine-ink px-5 py-4 text-cream shadow-[0_24px_48px_-20px_rgba(12,43,33,0.45)]">
-              <p className="font-mono text-2xl">PreK–12</p>
-              <p className="text-xs text-cream/60">one continuous journey</p>
+        {/* bottom rail: stats + scroll cue */}
+        <div className="container-x relative pb-9">
+          <Reveal delay={0.35} y={16}>
+            <div className="flex flex-wrap items-end justify-between gap-x-10 gap-y-6 border-t border-cream/15 pt-7">
+              <div className="flex flex-wrap gap-x-12 gap-y-5">
+                {stats.map((s) => (
+                  <div key={s.label}>
+                    <p className="font-mono text-xl text-cream md:text-2xl">{s.value}</p>
+                    <p className="mt-1 text-xs text-cream/55">{s.label}</p>
+                  </div>
+                ))}
+              </div>
+              <div className="hidden items-center gap-3 md:flex" aria-hidden>
+                <span className="text-[0.62rem] font-semibold uppercase tracking-[0.35em] text-cream/50">
+                  Scroll
+                </span>
+                <span className="relative h-10 w-px overflow-hidden bg-cream/20">
+                  <span
+                    className="absolute left-0 top-0 h-4 w-px bg-cream"
+                    style={{ animation: "marquee-y 1.8s cubic-bezier(0.16,1,0.3,1) infinite" }}
+                  />
+                </span>
+              </div>
             </div>
           </Reveal>
         </div>
@@ -92,7 +113,7 @@ export default function HomePage() {
         <div className="container-x">
           <SectionHeading
             kicker="What we believe"
-            title="Four words we run the school by"
+            title="Four words we *run the school* by"
             body="Not wall art. These show up in hiring, in schedules, in how a hallway disagreement gets handled."
             align="split"
           />
@@ -124,7 +145,7 @@ export default function HomePage() {
         <div className="container-x">
           <SectionHeading
             kicker="Learning & discovery"
-            title="One school, three chapters"
+            title="One school, *three chapters*"
             body="The same values from PreK to the senior Capstone — taught the way each age actually learns."
           />
           <div className="mt-12">
@@ -163,7 +184,7 @@ export default function HomePage() {
         <div className="container-x">
           <SectionHeading
             kicker="Student life"
-            title="Traditions worth keeping"
+            title="Traditions *worth keeping*"
             body="A young school gets to choose its rituals deliberately. These are the four we protect."
             align="split"
           />
@@ -215,7 +236,7 @@ export default function HomePage() {
             {fallbackNews.map((n) => (
               <RevealItem key={n.id}>
                 <Link
-                  href="/news"
+                  href={`/news/${n.id}`}
                   className="group grid gap-2 py-7 md:grid-cols-[10rem_1fr_auto] md:items-baseline md:gap-8"
                 >
                   <span className="text-xs font-semibold uppercase tracking-[0.2em] text-pine">
@@ -251,7 +272,7 @@ export default function HomePage() {
               />
               <div className="relative max-w-2xl">
                 <h2 className="font-display text-3xl leading-tight tracking-tight text-cream md:text-5xl">
-                  Come see a school being built — literally.
+                  <Em>{"Come see a school *being built* — literally."}</Em>
                 </h2>
                 <p className="mt-5 leading-relaxed text-cream/75">
                   {school.campusNote} Saturday tours include a hard-hat preview

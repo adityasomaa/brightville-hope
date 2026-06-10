@@ -6,6 +6,11 @@ import Lenis from "lenis";
 /**
  * Smooth scrolling on desktop only. Touch devices, small viewports, and
  * reduced-motion users keep native scrolling untouched.
+ *
+ * Uses Lenis's built-in rAF loop and the recommended `lenis` root classes
+ * (styles in globals.css) — skipping those classes is the classic cause of
+ * wheel input stalling over some sections while the scrollbar still works.
+ * Nested scrollable areas opt out via `data-lenis-prevent`.
  */
 export default function LenisProvider() {
   useEffect(() => {
@@ -18,21 +23,15 @@ export default function LenisProvider() {
     if (!isDesktop || reducedMotion) return;
 
     const lenis = new Lenis({
-      duration: 1.1,
+      autoRaf: true,
+      duration: 1.05,
       easing: (t) => Math.min(1, 1.001 - Math.pow(2, -10 * t)),
       smoothWheel: true,
       syncTouch: false,
+      anchors: true,
     });
 
-    let rafId: number;
-    const raf = (time: number) => {
-      lenis.raf(time);
-      rafId = requestAnimationFrame(raf);
-    };
-    rafId = requestAnimationFrame(raf);
-
     return () => {
-      cancelAnimationFrame(rafId);
       lenis.destroy();
     };
   }, []);

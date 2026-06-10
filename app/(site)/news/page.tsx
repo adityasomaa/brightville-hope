@@ -1,4 +1,5 @@
 import type { Metadata } from "next";
+import Link from "next/link";
 import PageHero from "@/components/PageHero";
 import Reveal, { RevealGroup, RevealItem } from "@/components/Reveal";
 import { supabaseAnon } from "@/lib/supabase";
@@ -86,20 +87,27 @@ export default async function NewsPage() {
             <RevealGroup className="mt-6 divide-y divide-line">
               {news.map((n) => (
                 <RevealItem key={n.id}>
-                  <article className="py-8">
-                    <div className="flex flex-wrap items-baseline gap-x-4 gap-y-1">
-                      <span className="text-xs font-semibold uppercase tracking-[0.2em] text-pine">
-                        {n.category}
+                  <Link href={`/news/${n.id}`} className="group block">
+                    <article className="py-8">
+                      <div className="flex flex-wrap items-baseline gap-x-4 gap-y-1">
+                        <span className="text-xs font-semibold uppercase tracking-[0.2em] text-pine">
+                          {n.category}
+                        </span>
+                        <time className="font-mono text-xs text-faint">
+                          {fmt(n.published_at)}
+                        </time>
+                      </div>
+                      <h3 className="mt-3 font-display text-2xl tracking-tight text-ink transition-colors group-hover:text-pine">
+                        {n.title}
+                      </h3>
+                      <p className="mt-3 max-w-[68ch] leading-relaxed text-soft">
+                        {n.body.length > 180 ? `${n.body.slice(0, 180)}…` : n.body}
+                      </p>
+                      <span className="link-underline mt-4 inline-block text-sm font-semibold text-pine">
+                        Read the full story
                       </span>
-                      <time className="font-mono text-xs text-faint">
-                        {fmt(n.published_at)}
-                      </time>
-                    </div>
-                    <h3 className="mt-3 font-display text-2xl tracking-tight text-ink">
-                      {n.title}
-                    </h3>
-                    <p className="mt-3 max-w-[68ch] leading-relaxed text-soft">{n.body}</p>
-                  </article>
+                    </article>
+                  </Link>
                 </RevealItem>
               ))}
             </RevealGroup>

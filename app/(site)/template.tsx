@@ -3,24 +3,24 @@
 import { motion } from "framer-motion";
 
 /**
- * Page-load transition (distinct from the full SiteLoader):
- * a quick pine curtain collapses upward while content rises in.
- * Remounts on every route change.
+ * Route-to-route transition (distinct from the full SiteLoader):
+ * a hairline progress bar sweeps across the top while the page
+ * content rises in softly. Remounts on every navigation.
  */
 export default function Template({ children }: { children: React.ReactNode }) {
   return (
     <>
       <motion.div
-        className="pointer-events-none fixed inset-0 z-[80] origin-top bg-pine"
-        initial={{ scaleY: 1 }}
-        animate={{ scaleY: 0 }}
-        transition={{ duration: 0.55, ease: [0.76, 0, 0.24, 1], delay: 0.05 }}
+        className="pointer-events-none fixed inset-x-0 top-0 z-[80] h-[2.5px] origin-left bg-pine"
+        initial={{ scaleX: 0, opacity: 1 }}
+        animate={{ scaleX: [0, 1, 1], opacity: [1, 1, 0] }}
+        transition={{ duration: 0.9, times: [0, 0.65, 1], ease: [0.16, 1, 0.3, 1] }}
         aria-hidden
       />
       <motion.div
-        initial={{ opacity: 0, y: 20 }}
+        initial={{ opacity: 0, y: 18 }}
         animate={{ opacity: 1, y: 0 }}
-        transition={{ duration: 0.6, ease: [0.16, 1, 0.3, 1], delay: 0.25 }}
+        transition={{ duration: 0.65, ease: [0.16, 1, 0.3, 1] }}
       >
         {children}
       </motion.div>
