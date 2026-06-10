@@ -27,12 +27,15 @@ export async function POST(req: Request) {
   let session: SessionFields | null = null;
 
   const db = supabaseAdmin();
+  if (!db) console.error("login: supabase admin client unavailable (missing env)");
   if (db) {
-    const { data: user } = await db
+    const { data: user, error } = await db
       .from("portal_users")
       .select("id,username,password_hash,full_name,role,grade")
       .eq("username", username)
       .maybeSingle();
+    if (error) console.error("login: portal_users query failed:", error.message);
+    if (!user) console.error("login: no portal user found for:", username);
 
     if (user && (await bcrypt.compare(password, user.password_hash))) {
       session = {
